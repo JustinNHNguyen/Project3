@@ -2,7 +2,7 @@
 
 using namespace std;
 
-game::game(string name, int price, int releasedate, int reviews, int players) {
+game::game(string name, float price, int releasedate, int reviews, int players) {
     this->name = name;
     this->price = price;
     this->releasedate = releasedate;
@@ -13,7 +13,7 @@ string game::getname() {
     return this->name;
 }
 
-int game::getprice() {
+float game::getprice() {
     return this->price;
 }
 
@@ -34,11 +34,11 @@ void game::swap(game& swapee) {
     this->name = swapee.getname();
     swapee.name = temp;
 
-    int temp2 = this->price;
+    float temp3 = this->price;
     this->price = swapee.getprice();
-    swapee.price = temp2;
+    swapee.price = temp3;
 
-    temp2 = this->releasedate;
+    int temp2 = this->releasedate;
     this->releasedate = swapee.getrelease();
     swapee.releasedate = temp2;
     
@@ -51,6 +51,6 @@ void game::swap(game& swapee) {
     swapee.players = temp2;
 }
 
-game::~game(){
+//game::~game(){
 
-}
+//}
