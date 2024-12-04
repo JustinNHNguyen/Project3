@@ -9,13 +9,13 @@
 using namespace std;
 
 //function to easily display the changeSetting functionality of the menu
-void changeSetting(string& price1, string& price2, int& algorthim) {
+void changeSetting(string& price1, string& price2, int& algorithm) {
     cout << "Enter Minimum Price: ";
     cin >> price1;
     cout << "Enter Max Price:  ";
     cin >> price2;
     cout << "Choose Algorithm\n1.Merge Sort   2.Quick Sort\n";
-    cin >> algorthim;
+    cin >> algorithm;
 }
 
 //function that parses a csv file to create the vector of game objects
@@ -30,7 +30,7 @@ vector<game> parse(string filename) {
         stringstream part(line);
         string cell;
         game temp;
-        while(getline(part, cell, ',')) {
+        getline(part, cell, ',');
             //first get is name
             temp.setname(cell);
             //second get is releasedate, only care about year (last 2 chars)
@@ -55,8 +55,6 @@ vector<game> parse(string filename) {
             //fifth get is review rating
             getline(part, cell, ',');
             temp.setreviews(stoi(cell));
-            
-        }
         list.push_back(temp);
     }
     return list;
