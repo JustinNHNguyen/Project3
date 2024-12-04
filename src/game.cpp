@@ -1,7 +1,7 @@
 #include "game.h"
 
 game::game(){
-    this->name = "NO NAME";
+    this->name = "_____";
     this->price = 0;
     this->releasedate = 0;
     this->reviews = 0;

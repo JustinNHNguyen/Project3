@@ -62,19 +62,39 @@ vector<game> parse(string filename) {
 }
 
 game getBest(vector<game> list, int price1, int price2) {
-    game* best;
-    int bestmetric = 0;
-    game* current = &list[0];
-    while (current->getprice() <= price2) {
+    int i = 1;
+    game* best = &list[0];
+    game* current = &list[i];
+    while (current->getprice() <= price2 && i < list.size()) {
         if (!(current->getprice() > price2)) {
-            int currmetric = 0;
-            //if new is equal to best, prefer the previous as that would be the lower priced game
-            if (bestmetric < currmetric) {
-                //currmetric += 
+            // priority is Reviews > players > release > price. If any category is within ~~ margin go to next
+            float diff = abs(best->getreviews() - current->getreviews()) ;
+            //if review score similar within 10%, check players
+            if(best->getreviews() < current->getreviews() && diff > best->getreviews()*.1) {
+                best = current;
+            } else {
+                diff = abs(best->getplayers() - current->getplayers());
+                //if players within 30%, check release date
+                if(best->getplayers() < current->getplayers() && diff > best->getplayers()*.3) {
+                    best = current;
+                } else {
+                    // Final benchmark is release year, 
+                    if (best->getrelease() < current->getrelease()) {
+                        best = current;
+                    }
+                    //if same releaase year check review scores 
+                    else if (best->getrelease() <= current->getrelease()) {
+                        if (best->getreviews() < current->getreviews()) {
+                            best = current;
+                        }
+                    }
+                }
             }
         }
+        i++;
+        current = &list[i];
     }
-    
+    return *best;
 }
 
 
@@ -95,6 +115,7 @@ int main() {
     //main loop for the terminal-based menu
     while (true)
     {
+        game best;
         //if not the first time, then program should be running one of the sort algorithms
         if (!first) {
             //start timer
@@ -107,7 +128,7 @@ int main() {
             //vector<game> subList = getsublist(price1, price2, sorted_list);
             // ^ prob not needed anymore
 
-            //game best = getBest(list, stoi(price1), stoi(price2));
+            best = getBest(list, stoi(price1), stoi(price2));
             
             //end timer
         }
@@ -122,7 +143,7 @@ int main() {
             cout << "_____" << endl;
         }
         cout << "Run Time: " << runtime << " ms" << endl;
-        cout << "Suggested Game: " << "best.getname()" << endl;
+        cout << "Suggested Game: " << best.getname() << endl;
         if (!first) {
             cout << "1. Change Settings\n3. Exit\n";
             int choice;
