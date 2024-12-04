@@ -7,7 +7,7 @@ using namespace std;
 class game {
 private:
     string name;
-    int price;
+    float price;
     int releasedate;
     int reviews;
     int players;

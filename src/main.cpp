@@ -62,36 +62,49 @@ vector<game> parse(string filename) {
 }
 
 game getBest(vector<game> list, int price1, int price2) {
-    int i = 1;
+    int j = 1;
     game* best = &list[0];
+    game* prev = best;
+    //gets the first instance of the lower priced game
+    while (!(best->getprice() >= price1))
+    {
+        best = &list[j];
+        j++;
+    }
+    int i = j+1;
     game* current = &list[i];
     while (current->getprice() <= price2 && i < list.size()) {
-        if (!(current->getprice() > price2)) {
-            // priority is Reviews > players > release > price. If any category is within ~~ margin go to next
-            float diff = abs(best->getreviews() - current->getreviews()) ;
-            //if review score similar within 10%, check players
-            if(best->getreviews() < current->getreviews() && diff > best->getreviews()*.1) {
+        if (prev->getprice() > current->getprice()) {
+            cout << "ERROR ERROR NOT SORTED ERROR ERROR" << endl;
+            break;
+        }
+        // priority is Reviews > players > release > price. If any category is within ~~ margin go to next
+        float diff = current->getreviews() - best->getreviews() ;
+        //if review score above 10% of best than replace
+        if(diff > best->getreviews()*.1) {
+            best = current;
+        //if difference not greater than +10% but still is higher check players
+        } else if (best->getreviews() < current->getreviews()){
+            diff = current->getplayers() - best->getplayers();
+            //if current.players above 30%, replace 
+            if(diff > best->getplayers()*.3) {
                 best = current;
-            } else {
-                diff = abs(best->getplayers() - current->getplayers());
-                //if players within 30%, check release date
-                if(best->getplayers() < current->getplayers() && diff > best->getplayers()*.3) {
+                //if current.players is higher check release year
+            } else if (best->getplayers() < current->getplayers()) {
+                // Final benchmark is release year, 
+                if (best->getrelease() < current->getrelease()) {
                     best = current;
-                } else {
-                    // Final benchmark is release year, 
-                    if (best->getrelease() < current->getrelease()) {
+                }
+                //if same releaase year check review scores 
+                else if (best->getrelease() <= current->getrelease()) {
+                    if (best->getreviews() < current->getreviews()) {
                         best = current;
-                    }
-                    //if same releaase year check review scores 
-                    else if (best->getrelease() <= current->getrelease()) {
-                        if (best->getreviews() < current->getreviews()) {
-                            best = current;
-                        }
                     }
                 }
             }
         }
         i++;
+        prev = current;
         current = &list[i];
     }
     return *best;
@@ -116,21 +129,17 @@ int main() {
     //main loop for the terminal-based menu
     while (true)
     {
+        vector<game> sorted_list = list;
         game best;
         //if not the first time, then program should be running one of the sort algorithms
         if (!first) {
             auto begin = chrono::high_resolution_clock::now();
             if (algorithm == 1) {
-                //mergeSort(list);
+                mergeSort(sorted_list, 0, list.size()-1);
             } else if (algorithm == 2) {
-                //quickSort(list);
+                quickSort(sorted_list, 0, list.size()-1);
             }
-            
-            //vector<game> subList = getsublist(price1, price2, sorted_list);
-            // ^ prob not needed anymore
-
-            //best = getBest(sorted_list, stoi(price1), stoi(price2));
-            best = getBest(list, stoi(price1), stoi(price2));
+            best = getBest(sorted_list, stoi(price1), stoi(price2));
             
             auto end = chrono::high_resolution_clock::now();
             runtime = chrono::duration_cast<chrono::milliseconds>(end-begin).count();
