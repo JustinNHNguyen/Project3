@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <chrono>
 #include "game.h"
 
 using namespace std;
@@ -11,7 +12,7 @@ using namespace std;
 void changeSetting(string& price1, string& price2, int& algorthim) {
     cout << "Enter Minimum Price: ";
     cin >> price1;
-    cout << "Etner Max Price:  ";
+    cout << "Enter Max Price:  ";
     cin >> price2;
     cout << "Choose Algorithm\n1.Merge Sort   2.Quick Sort\n";
     cin >> algorthim;
@@ -112,13 +113,14 @@ int main() {
         cout << list[i].getname() << endl;
     }
     */
+   
     //main loop for the terminal-based menu
     while (true)
     {
         game best;
         //if not the first time, then program should be running one of the sort algorithms
         if (!first) {
-            //start timer
+            auto begin = chrono::high_resolution_clock::now();
             if (algorithm == 1) {
                 //vector<game> sorted_list = mergeSort(list);
             } else if (algorithm == 2) {
@@ -130,7 +132,8 @@ int main() {
 
             best = getBest(list, stoi(price1), stoi(price2));
             
-            //end timer
+            auto end = chrono::high_resolution_clock::now();
+            runtime = chrono::duration_cast<chrono::milliseconds>(end-begin).count();
         }
         cout << "The Price is just Right\n\n";
         cout << "$" << price1 << " --- $" << price2 << endl;
@@ -145,7 +148,7 @@ int main() {
         cout << "Run Time: " << runtime << " ms" << endl;
         cout << "Suggested Game: " << best.getname() << endl;
         if (!first) {
-            cout << "1. Change Settings\n3. Exit\n";
+            cout << "1. Change Settings\n2. Exit\n";
             int choice;
             cin >> choice;
             if (choice == 1) {
