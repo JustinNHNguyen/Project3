@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <chrono>
+#include "mergequicksort.cpp"
 #include "game.h"
 
 using namespace std;
@@ -120,9 +121,9 @@ int main() {
         if (!first) {
             auto begin = chrono::high_resolution_clock::now();
             if (algorithm == 1) {
-                //vector<game> sorted_list = mergeSort(list);
+                //mergeSort(list);
             } else if (algorithm == 2) {
-                //vector<game> sorted_list = quickSort(list);
+                //quickSort(list);
             }
             
             //vector<game> subList = getsublist(price1, price2, sorted_list);
