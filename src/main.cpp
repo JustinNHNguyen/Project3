@@ -113,7 +113,7 @@ int main() {
         cout << list[i].getname() << endl;
     }
     */
-   
+
     //main loop for the terminal-based menu
     while (true)
     {
@@ -130,6 +130,7 @@ int main() {
             //vector<game> subList = getsublist(price1, price2, sorted_list);
             // ^ prob not needed anymore
 
+            //best = getBest(sorted_list, stoi(price1), stoi(price2));
             best = getBest(list, stoi(price1), stoi(price2));
             
             auto end = chrono::high_resolution_clock::now();
