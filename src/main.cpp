@@ -1,10 +1,13 @@
 #include <vector>
 #include <string>
+#include <fstream>
 #include <iostream>
-//#include "game.h"
+#include <sstream>
+#include "game.h"
+
 using namespace std;
 
-
+//function to easily display the changeSetting functionality of the menu
 void changeSetting(string& price1, string& price2, int& algorthim) {
     cout << "Enter Minimum Price: ";
     cin >> price1;
@@ -14,27 +17,97 @@ void changeSetting(string& price1, string& price2, int& algorthim) {
     cin >> algorthim;
 }
 
+//function that parses a csv file to create the vector of game objects
+vector<game> parse(string filename) {
+    vector<game> list;
+    //ifstream for rows of the csv
+    ifstream file(filename);
+    string line;
+    //continues until no rows left
+    while(getline(file,line)) {
+        //stringstream to seperate row into cells
+        stringstream part(line);
+        string cell;
+        game temp;
+        while(getline(part, cell, ',')) {
+            //first get is name
+            temp.setname(cell);
+            //second get is releasedate, only care about year (last 2 chars)
+            getline(part,cell, ',');
+            size_t pos = cell.find_last_of('/');
+            if (pos != string::npos) {
+                temp.setrelease(stoi(cell.substr(pos+1,4)));
+            } else {
+                temp.setrelease(-1);
+            }
+            //third get is estimated players in form of 0 - ####, we will use higher range
+            getline(part, cell, ',');
+            pos = cell.find('-');
+            if (pos != string::npos) {
+                temp.setplayers(stoi(cell.substr(pos+2,cell.length()-pos+2)));
+            } else {
+                temp.setplayers(0);
+            }
+            //forth get is price
+            getline(part, cell, ',');
+            temp.setprice(stof(cell));
+            //fifth get is review rating
+            getline(part, cell, ',');
+            temp.setreviews(stoi(cell));
+            
+        }
+        list.push_back(temp);
+    }
+    return list;
+}
+
+game getBest(vector<game> list, int price1, int price2) {
+    game* best;
+    int bestmetric = 0;
+    game* current = &list[0];
+    while (current->getprice() <= price2) {
+        if (!(current->getprice() > price2)) {
+            int currmetric = 0;
+            //if new is equal to best, prefer the previous as that would be the lower priced game
+            if (bestmetric < currmetric) {
+                //currmetric += 
+            }
+        }
+    }
+    
+}
+
+
 int main() {
-    //vector<game> list; 
-    //parse csv to create game objects -> insert into vector
+    vector<game> list = parse("expanded_games.csv");
     string price1 = "_____";
     string price2 = "_____";
     int algorithm = -1;
     int runtime = 0;
     bool first = true;
-    //game best("_____", 0, 0, 0, 0);
+    /*
+    used to test parse
+    for (int i = 0; i < list.size(); i++)
+    {
+        cout << list[i].getname() << endl;
+    }
+    */
+    //main loop for the terminal-based menu
     while (true)
     {
+        //if not the first time, then program should be running one of the sort algorithms
         if (!first) {
             //start timer
             if (algorithm == 1) {
-                //mergeSort(list);
+                //vector<game> sorted_list = mergeSort(list);
             } else if (algorithm == 2) {
-                //quickSort(list);
+                //vector<game> sorted_list = quickSort(list);
             }
-            //vector<game> subList = getsublist(price1, price2, list);
             
-            //best = getBest(sublist);
+            //vector<game> subList = getsublist(price1, price2, sorted_list);
+            // ^ prob not needed anymore
+
+            //game best = getBest(list, stoi(price1), stoi(price2));
             
             //end timer
         }
@@ -51,12 +124,10 @@ int main() {
         cout << "Run Time: " << runtime << " ms" << endl;
         cout << "Suggested Game: " << "best.getname()" << endl;
         if (!first) {
-            cout << "1. See Other Games\n2. Change Settings\n3. Exit\n";
+            cout << "1. Change Settings\n3. Exit\n";
             int choice;
             cin >> choice;
             if (choice == 1) {
-                //pageResults(subList);
-            } else if (choice == 2) {
                 changeSetting(price1, price2, algorithm);    
             } else {
                 break;

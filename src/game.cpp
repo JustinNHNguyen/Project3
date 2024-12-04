@@ -1,6 +1,12 @@
 #include "game.h"
 
-using namespace std;
+game::game(){
+    this->name = "NO NAME";
+    this->price = 0;
+    this->releasedate = 0;
+    this->reviews = 0;
+    this->players = 0;
+}
 
 game::game(string name, float price, int releasedate, int reviews, int players) {
     this->name = name;
@@ -51,6 +57,24 @@ void game::swap(game& swapee) {
     swapee.players = temp2;
 }
 
-//game::~game(){
+void game::setname(string name) {
+    this->name = name;
+}
+void game::setprice(float price) {
+    this->price = price;
+}
+void game::setrelease(int releasedate) {
+    this->releasedate = releasedate;
+}
 
-//}
+void game::setreviews(int reviews) {
+    this->reviews = reviews;
+}
+
+void game::setplayers(int players) {
+    this->players = players;
+}
+
+game::~game(){
+
+}
