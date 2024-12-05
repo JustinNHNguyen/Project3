@@ -133,7 +133,7 @@ int main() {
         game best;
         //if not the first time, then program should be running one of the sort algorithms
         if (!first) {
-            cout << "Loading . . ." << endl;
+            cout << "Sorting . . ." << endl;
             auto begin = chrono::high_resolution_clock::now();
             if (algorithm == 1) {
                 mergeSort(sorted_list, 0, list.size()-1);
