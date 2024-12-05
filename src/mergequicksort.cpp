@@ -1,9 +1,8 @@
 #include <vector>
 #include "game.h"
-
 using namespace std;
 
-// Merge Sort Implementation
+// Merge Sort Implementation cited from https://www.geeksforgeeks.org/merge-sort/
 void merge(vector<game>& arr, int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -26,33 +25,25 @@ void merge(vector<game>& arr, int left, int mid, int right) {
             j++;
         }
         k++;
-    }
-
-    while (i < n1) {
+    } while (i < n1) {
         arr[k] = L[i];
         i++;
         k++;
-    }
-
-    while (j < n2) {
+    } while (j < n2) {
         arr[k] = R[j];
         j++;
         k++;
     }
 }
-
 void mergeSort(vector<game>& arr, int left, int right) {
     if (left < right) {
         int mid = left + (right - left) / 2;
-
         mergeSort(arr, left, mid);
         mergeSort(arr, mid + 1, right);
-
         merge(arr, left, mid, right);
     }
 }
-
-// Quick Sort Implementation
+// Quick Sort Implementation cited from https://www.geeksforgeeks.org/cpp-program-for-quicksort/
 int partition(vector<game>& arr, int low, int high) {
     float pivot = arr[high].getprice();
     int i = low - 1;
@@ -63,15 +54,12 @@ int partition(vector<game>& arr, int low, int high) {
             arr[i].swap(arr[j]);
         }
     }
-
     arr[i + 1].swap(arr[high]);
     return i + 1;
 }
-
 void quickSort(vector<game>& arr, int low, int high) {
     if (low < high) {
         int pi = partition(arr, low, high);
-
         quickSort(arr, low, pi - 1);
         quickSort(arr, pi + 1, high);
     }
