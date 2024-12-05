@@ -13,7 +13,7 @@ using namespace std;
 void changeSetting(string& price1, string& price2, int& algorithm) {
     cout << "Enter Minimum Price: ";
     cin >> price1;
-    cout << "Enter Max Price:  ";
+    cout << "Enter Max Price:     ";
     cin >> price2;
     cout << "Choose Algorithm\n1.Merge Sort   2.Quick Sort\n";
     cin >> algorithm;
@@ -133,18 +133,20 @@ int main() {
         game best;
         //if not the first time, then program should be running one of the sort algorithms
         if (!first) {
+            cout << "Loading . . ." << endl;
             auto begin = chrono::high_resolution_clock::now();
             if (algorithm == 1) {
                 mergeSort(sorted_list, 0, list.size()-1);
             } else if (algorithm == 2) {
                 quickSort(sorted_list, 0, list.size()-1);
             }
+            cout << "Sort Complete. . ." << endl << "Suggesting Game. . ." << endl;
             best = getBest(sorted_list, stoi(price1), stoi(price2));
-            
             auto end = chrono::high_resolution_clock::now();
+            cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             runtime = chrono::duration_cast<chrono::milliseconds>(end-begin).count();
         }
-        cout << "The Price is just Right\n\n";
+        cout << "\nThe Price is just Right\n\n";
         cout << "$" << price1 << " --- $" << price2 << endl;
         cout << "Algorithm Choice: ";
         if (algorithm == 1) {
@@ -154,8 +156,8 @@ int main() {
         } else {
             cout << "_____" << endl;
         }
-        cout << "Run Time: " << runtime << " ms" << endl;
-        cout << "Suggested Game: " << best.getname() << endl;
+        cout << "Run Time:         " << runtime << " ms" << endl;
+        cout << "Suggested Game:   " << best.getname() << endl;
         if (!first) {
             cout << "1. Change Settings\n2. Exit\n";
             int choice;
@@ -169,7 +171,7 @@ int main() {
             changeSetting(price1, price2, algorithm);
             first = false;
         }
-        cout << "\n\n\n\n\n\n\n";
+        cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
     }
      
     //terminal menu
